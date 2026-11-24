@@ -1,0 +1,16 @@
+rules_version = '2';
+// Hold points hold text findings and photo fingerprints only, never photos.
+// Each builder (anonymous Firebase Auth user) can create and read only their own.
+service cloud.firestore {
+  match /databases/{database}/documents {
+    match /holdPoints/{id} {
+      allow create: if request.auth != null
+        && request.resource.data.uid == request.auth.uid
+        && request.resource.data.decision in ['hold', 'clear', 'incomplete']
+        && request.resource.data.photos is list
+        && request.resource.data.photos.size() <= 50;
+      allow read: if request.auth != null && resource.data.uid == request.auth.uid;
+      allow update, delete: if false; // a hold point is a record; it is not edited later
+    }
+  }
+}
