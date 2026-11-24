@@ -22,8 +22,10 @@ const deviceReady = (d: DeviceStatus) => d === 'available';
 
 export function decidePhotoCheck(ctx: RouteContext): Decision {
   if (ctx.localOnly) {
-    if (deviceReady(ctx.device) || ctx.device === 'downloadable' || ctx.device === 'downloading')
+    if (deviceReady(ctx.device))
       return { route: 'device_only', reason: 'Photos stay on this computer, so only Gemini Nano may look at them' };
+    if (ctx.device === 'downloadable' || ctx.device === 'downloading')
+      return { route: 'blocked', reason: 'Photos stay on this computer, and Gemini Nano is not downloaded yet: press "Download model" at the top' };
     return { route: 'blocked', reason: 'Photos stay on this computer, and Gemini Nano is not available in this browser' };
   }
   if (deviceReady(ctx.device))

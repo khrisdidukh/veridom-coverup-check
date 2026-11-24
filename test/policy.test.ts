@@ -22,6 +22,9 @@ describe('photo check routing', () => {
   it('refuses rather than leaking when the lock is on and there is no device model', () => {
     expect(decidePhotoCheck({ localOnly: true, online: true, device: 'no-api' }).route).toBe('blocked');
   });
+  it('waits for the model download instead of hanging when locked', () => {
+    expect(decidePhotoCheck({ localOnly: true, online: true, device: 'downloadable' }).route).toBe('blocked');
+  });
   it('prefers the device and lets Firebase fall back when unlocked', () => {
     expect(decidePhotoCheck(ready).route).toBe('device_first');
     expect(decidePhotoCheck({ ...ready, device: 'unavailable' }).route).toBe('device_first');
