@@ -22,7 +22,7 @@ The routing rules are plain functions in [`src/policy.ts`](src/policy.ts), cover
 ## Firebase products used
 
 - **Firebase AI Logic** (`firebase/ai`): hybrid inference with `InferenceMode`, `onDeviceParams` (image input, JSON `responseConstraint`) and `inCloudParams` (response schema). See [`src/inference.ts`](src/inference.ts).
-- **App Check** with reCAPTCHA v3 (required by AI Logic).
+- **App Check** with reCAPTCHA Enterprise (Fraud Defense) (required by AI Logic).
 - **Remote Config**: stage checklists per jurisdiction, cloud model names and the escalation threshold ([`remoteconfig.template.json`](remoteconfig.template.json)). Bundled defaults keep it working offline.
 - **Cloud Firestore**: saved hold points hold text findings and SHA-256 fingerprints of the photos, never the photos ([`firestore.rules`](firestore.rules)).
 - **Authentication**: anonymous sign-in, so each builder reads only their own hold points.
@@ -38,7 +38,7 @@ npm run dev
 npm test               # routing policy tests
 ```
 
-In the Firebase console: enable Firebase AI Logic (Gemini Developer API), App Check (reCAPTCHA v3, or a debug token for local use), Anonymous sign-in, Firestore (deploy `firestore.rules`) and Remote Config (import `remoteconfig.template.json`).
+In the Firebase console: enable Firebase AI Logic (Gemini Developer API), App Check (reCAPTCHA Enterprise (Fraud Defense), or a debug token for local use), Anonymous sign-in, Firestore (deploy `firestore.rules`) and Remote Config (import `remoteconfig.template.json`).
 
 ## Sample photos
 

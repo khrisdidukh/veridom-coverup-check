@@ -1,5 +1,5 @@
 import { initializeApp, type FirebaseApp } from 'firebase/app';
-import { initializeAppCheck, ReCaptchaV3Provider } from 'firebase/app-check';
+import { initializeAppCheck, ReCaptchaEnterpriseProvider } from 'firebase/app-check';
 import { getAI, GoogleAIBackend, type AI } from 'firebase/ai';
 import { getRemoteConfig, fetchAndActivate, getValue, type RemoteConfig } from 'firebase/remote-config';
 import { getAuth, signInAnonymously, type Auth } from 'firebase/auth';
@@ -48,13 +48,13 @@ export function firebase(): FirebaseHandles | null {
   if (handles) return handles;
   const app = initializeApp(firebaseConfig);
 
-  // App Check: reCAPTCHA v3 on the hosted site; a debug token in local development.
+  // App Check: reCAPTCHA Enterprise (Fraud Defense) on the hosted site; a debug token in local development.
   const debugToken = import.meta.env.VITE_APPCHECK_DEBUG_TOKEN;
   if (debugToken) (self as unknown as { FIREBASE_APPCHECK_DEBUG_TOKEN: string }).FIREBASE_APPCHECK_DEBUG_TOKEN = debugToken;
   const siteKey = import.meta.env.VITE_RECAPTCHA_SITE_KEY;
   if (siteKey || debugToken) {
     initializeAppCheck(app, {
-      provider: new ReCaptchaV3Provider(siteKey || 'debug'),
+      provider: new ReCaptchaEnterpriseProvider(siteKey || 'debug'),
       isTokenAutoRefreshEnabled: true,
     });
   }
